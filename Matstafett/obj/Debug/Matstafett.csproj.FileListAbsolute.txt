@@ -1,0 +1,9 @@
+c:\users\patrik\documents\visual studio 2017\Projects\Matstafett\Matstafett\bin\Debug\Matstafett.exe.config
+c:\users\patrik\documents\visual studio 2017\Projects\Matstafett\Matstafett\bin\Debug\Matstafett.exe
+c:\users\patrik\documents\visual studio 2017\Projects\Matstafett\Matstafett\bin\Debug\Matstafett.pdb
+c:\users\patrik\documents\visual studio 2017\Projects\Matstafett\Matstafett\obj\Debug\Matstafett.csprojResolveAssemblyReference.cache
+c:\users\patrik\documents\visual studio 2017\Projects\Matstafett\Matstafett\obj\Debug\Matstafett.MainWindow.resources
+c:\users\patrik\documents\visual studio 2017\Projects\Matstafett\Matstafett\obj\Debug\Matstafett.Properties.Resources.resources
+c:\users\patrik\documents\visual studio 2017\Projects\Matstafett\Matstafett\obj\Debug\Matstafett.csproj.GenerateResource.Cache
+c:\users\patrik\documents\visual studio 2017\Projects\Matstafett\Matstafett\obj\Debug\Matstafett.exe
+c:\users\patrik\documents\visual studio 2017\Projects\Matstafett\Matstafett\obj\Debug\Matstafett.pdb
