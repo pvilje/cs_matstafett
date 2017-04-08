@@ -49,12 +49,18 @@ namespace Matstafett
             GenerateLineup();
         }
 
+        /* GenerateLineup
+         * Main Function that calls all other functions used.
+         * Once this function is called everything is autmatic 
+         * Params: None */
         private void GenerateLineup()
         {
+            // Initiate variables
             FoodRelayParticipants participants = new FoodRelayParticipants();
             string shortFileName = hiddenBoxFileName.Text;
             string fullFileName = fileBox.Text;
 
+            // Get the participant list from the selected excel file. 
             var excelFileParticipantList = new Excel.Application();
             Excel.Workbook wb = excelFileParticipantList.Workbooks.Open(fullFileName, ReadOnly: true);
             Excel.Worksheet ws = wb.Sheets[1];
@@ -70,8 +76,6 @@ namespace Matstafett
                 }
             }
             wb.Close();
-            
-               
         }
     }
 }
