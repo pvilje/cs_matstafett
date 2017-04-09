@@ -7,3 +7,14 @@ c:\users\patrik\documents\visual studio 2017\Projects\Matstafett\Matstafett\obj\
 c:\users\patrik\documents\visual studio 2017\Projects\Matstafett\Matstafett\obj\Debug\Matstafett.csproj.GenerateResource.Cache
 c:\users\patrik\documents\visual studio 2017\Projects\Matstafett\Matstafett\obj\Debug\Matstafett.exe
 c:\users\patrik\documents\visual studio 2017\Projects\Matstafett\Matstafett\obj\Debug\Matstafett.pdb
+C:\Users\Patrik\Source\Repos\cs_matstafett\cs_matstafett\Matstafett\bin\Debug\Matstafett.exe.config
+C:\Users\Patrik\Source\Repos\cs_matstafett\cs_matstafett\Matstafett\bin\Debug\Matstafett.exe
+C:\Users\Patrik\Source\Repos\cs_matstafett\cs_matstafett\Matstafett\bin\Debug\Matstafett.pdb
+C:\Users\Patrik\Source\Repos\cs_matstafett\cs_matstafett\Matstafett\obj\Debug\Matstafett.csprojResolveAssemblyReference.cache
+C:\Users\Patrik\Source\Repos\cs_matstafett\cs_matstafett\Matstafett\obj\Debug\Matstafett.MainWindow.resources
+C:\Users\Patrik\Source\Repos\cs_matstafett\cs_matstafett\Matstafett\obj\Debug\Matstafett.Properties.Resources.resources
+C:\Users\Patrik\Source\Repos\cs_matstafett\cs_matstafett\Matstafett\obj\Debug\Matstafett.csproj.GenerateResource.Cache
+C:\Users\Patrik\Source\Repos\cs_matstafett\cs_matstafett\Matstafett\obj\Debug\Matstafett.exe
+C:\Users\Patrik\Source\Repos\cs_matstafett\cs_matstafett\Matstafett\obj\Debug\Matstafett.pdb
+C:\Users\Patrik\Source\Repos\cs_matstafett\cs_matstafett\Matstafett\obj\Debug\Matstafett.Instructions.resources
+C:\Users\Patrik\Source\Repos\cs_matstafett\cs_matstafett\Matstafett\obj\Debug\Matstafett.ExcelFileRequirements.resources

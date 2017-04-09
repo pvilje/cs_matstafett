@@ -117,7 +117,19 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <metadata name="menuStrip1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>17, 17</value>
-  </metadata>
+  <data name="richTextBox1.Text" xml:space="preserve">
+    <value>Okej, några krav på hur excelfilens innehåll ser ut för att jag ska begripa nått.. 
+
+1. Flik 1 är den enda flik jag komemr att titta på, det får finnas fler, men jag kommer inte bry mig om dom.
+
+2. Kolumn "A" innehåller namn.
+
+3. Kolumn "B" innehåller kontaktuppgifter (adress, telefon etc).
+
+4. Kolumn "C" innehåller Allergier.
+
+5. Innehållet börjar på rad 1, och det finns inga tomma rader "mitt i". 
+    Jag kommer nämligen räkna antalet rader med innehåll och sen utgå ifrån att de är de första raderna i dokumentet.
+    Ex: Om det är 33 deltagare så ska de börja på rad 1 och sluta på rad 33.</value>
+  </data>
 </root>

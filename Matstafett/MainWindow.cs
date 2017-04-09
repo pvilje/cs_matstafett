@@ -32,7 +32,13 @@ namespace Matstafett
                 hiddenBoxFileName.Text = filePicker.SafeFileName;
 
                 Start.Enabled = true;
+                LogOutput(string.Format("Vald fil: {0}", filePicker.SafeFileName));
             }
+        }
+
+        private void ClearLog_Click(object sender, EventArgs e)
+        {
+            log.Clear();
         }
 
         private void start_Click(object sender, EventArgs e)
@@ -43,9 +49,11 @@ namespace Matstafett
                 DialogResult noLetters = MessageBox.Show("Inga brev kommer att skapas\nÄr det verkligen meningen?", "Bekräfta att inga brev ska skapas", MessageBoxButtons.YesNo);
                 if (noLetters != DialogResult.Yes)
                 {
+                    LogOutput("Användaren ångrade sig visst... Avvaktar vidare instruktioner");
                     return;
                 }
             }
+            LogOutput("Kul! Då kör vi!");
             GenerateLineup();
         }
 
@@ -55,12 +63,15 @@ namespace Matstafett
          * Params: None */
         private void GenerateLineup()
         {
-            // Initiate variables
+            // Initiate variables.
+            // *******************
             FoodRelayParticipants participants = new FoodRelayParticipants();
             string shortFileName = hiddenBoxFileName.Text;
             string fullFileName = fileBox.Text;
 
             // Get the participant list from the selected excel file. 
+            // ******************************************************
+            LogOutput("Letar efter Deltagare i filen.");
             var excelFileParticipantList = new Excel.Application();
             Excel.Workbook wb = excelFileParticipantList.Workbooks.Open(fullFileName, ReadOnly: true);
             Excel.Worksheet ws = wb.Sheets[1];
@@ -76,6 +87,48 @@ namespace Matstafett
                 }
             }
             wb.Close();
+            LogOutput(string.Format("Hittade {0} deltagare.", participants.All.Count));
+
+            // Verify the number of Participants
+            // *********************************
+            LogOutput("Försäkrar mig om att antalet deltagare är ok.");
+            int numberOfParticipantsOk = participants.ValidateNumberOfParticipants();
+            if (numberOfParticipantsOk == 1)
+            {
+                LogOutput("Glöm det, avbryter... Det MÅSTE vara fler än 9 deltagare! Avbryter.");
+                return;
+            }
+            else if (numberOfParticipantsOk == 2)
+            {
+                LogOutput("Nejje! Antalet Deltagare måste vara delbart med tre. Avbryter.");
+                return;
+            }
+
+            // Randomize array index. 
+            participants.GenerateRandomizedIndex();
+            foreach(int i in participants.RandomizedIndex)
+            {
+                LogOutput(i.ToString());
+            }
+
+        }
+
+        /* LogOutput
+         * Short function to log output to the log textbox
+         * Param: text: the string to log. */
+        private void LogOutput(string text)
+        {
+            log.AppendText(text + Environment.NewLine);
+        }
+
+        private void instruktionerToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            new Instructions().ShowDialog();
+        }
+
+        private void kravPåFilenToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            new ExcelFileRequirements().ShowDialog();
         }
     }
 }

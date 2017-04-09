@@ -33,6 +33,13 @@
             this.hiddenBoxFileName = new System.Windows.Forms.TextBox();
             this.generateLetters = new System.Windows.Forms.CheckBox();
             this.Start = new System.Windows.Forms.Button();
+            this.log = new System.Windows.Forms.TextBox();
+            this.clearLog = new System.Windows.Forms.Button();
+            this.menuStrip1 = new System.Windows.Forms.MenuStrip();
+            this.hjälpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.kravPåFilenToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.instruktionerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // browseButton
@@ -55,7 +62,7 @@
             // 
             // hiddenBoxFileName
             // 
-            this.hiddenBoxFileName.Location = new System.Drawing.Point(40, 13);
+            this.hiddenBoxFileName.Location = new System.Drawing.Point(40, 27);
             this.hiddenBoxFileName.Name = "hiddenBoxFileName";
             this.hiddenBoxFileName.Size = new System.Drawing.Size(100, 20);
             this.hiddenBoxFileName.TabIndex = 2;
@@ -76,7 +83,7 @@
             // Start
             // 
             this.Start.Enabled = false;
-            this.Start.Location = new System.Drawing.Point(462, 185);
+            this.Start.Location = new System.Drawing.Point(462, 106);
             this.Start.Name = "Start";
             this.Start.Size = new System.Drawing.Size(75, 56);
             this.Start.TabIndex = 4;
@@ -84,18 +91,77 @@
             this.Start.UseVisualStyleBackColor = true;
             this.Start.Click += new System.EventHandler(this.start_Click);
             // 
+            // log
+            // 
+            this.log.Location = new System.Drawing.Point(40, 167);
+            this.log.Multiline = true;
+            this.log.Name = "log";
+            this.log.ReadOnly = true;
+            this.log.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.log.Size = new System.Drawing.Size(497, 164);
+            this.log.TabIndex = 5;
+            // 
+            // clearLog
+            // 
+            this.clearLog.Location = new System.Drawing.Point(544, 307);
+            this.clearLog.Name = "clearLog";
+            this.clearLog.Size = new System.Drawing.Size(75, 23);
+            this.clearLog.TabIndex = 6;
+            this.clearLog.Text = "Töm Loggen";
+            this.clearLog.UseVisualStyleBackColor = true;
+            this.clearLog.Click += new System.EventHandler(this.ClearLog_Click);
+            // 
+            // menuStrip1
+            // 
+            this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.hjälpToolStripMenuItem});
+            this.menuStrip1.Location = new System.Drawing.Point(0, 0);
+            this.menuStrip1.Name = "menuStrip1";
+            this.menuStrip1.Size = new System.Drawing.Size(630, 24);
+            this.menuStrip1.TabIndex = 7;
+            this.menuStrip1.Text = "menuStrip1";
+            // 
+            // hjälpToolStripMenuItem
+            // 
+            this.hjälpToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.instruktionerToolStripMenuItem,
+            this.kravPåFilenToolStripMenuItem});
+            this.hjälpToolStripMenuItem.Name = "hjälpToolStripMenuItem";
+            this.hjälpToolStripMenuItem.Size = new System.Drawing.Size(47, 20);
+            this.hjälpToolStripMenuItem.Text = "Hjälp";
+            // 
+            // kravPåFilenToolStripMenuItem
+            // 
+            this.kravPåFilenToolStripMenuItem.Name = "kravPåFilenToolStripMenuItem";
+            this.kravPåFilenToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.kravPåFilenToolStripMenuItem.Text = "Krav på filen";
+            this.kravPåFilenToolStripMenuItem.Click += new System.EventHandler(this.kravPåFilenToolStripMenuItem_Click);
+            // 
+            // instruktionerToolStripMenuItem
+            // 
+            this.instruktionerToolStripMenuItem.Name = "instruktionerToolStripMenuItem";
+            this.instruktionerToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.instruktionerToolStripMenuItem.Text = "Instruktioner";
+            this.instruktionerToolStripMenuItem.Click += new System.EventHandler(this.instruktionerToolStripMenuItem_Click);
+            // 
             // MainWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(618, 281);
+            this.ClientSize = new System.Drawing.Size(630, 343);
+            this.Controls.Add(this.clearLog);
+            this.Controls.Add(this.log);
             this.Controls.Add(this.Start);
             this.Controls.Add(this.generateLetters);
             this.Controls.Add(this.hiddenBoxFileName);
             this.Controls.Add(this.fileBox);
             this.Controls.Add(this.browseButton);
+            this.Controls.Add(this.menuStrip1);
+            this.MainMenuStrip = this.menuStrip1;
             this.Name = "MainWindow";
-            this.Text = "Form1";
+            this.Text = "MatStafett";
+            this.menuStrip1.ResumeLayout(false);
+            this.menuStrip1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -108,6 +174,12 @@
         private System.Windows.Forms.TextBox hiddenBoxFileName;
         private System.Windows.Forms.CheckBox generateLetters;
         private System.Windows.Forms.Button Start;
+        private System.Windows.Forms.TextBox log;
+        private System.Windows.Forms.Button clearLog;
+        private System.Windows.Forms.MenuStrip menuStrip1;
+        private System.Windows.Forms.ToolStripMenuItem hjälpToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem instruktionerToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem kravPåFilenToolStripMenuItem;
     }
 }
 
