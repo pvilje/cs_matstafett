@@ -19,8 +19,13 @@ namespace Matstafett
             InitializeComponent();
         }
 
-        private void browseButton_Click(object sender, EventArgs e)
-        {
+        /// <summary>
+        /// OnClick handler for the browsebutton
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void BrowseButton_Click(object sender, EventArgs e)
+        { 
             // Open a filedialog and save the dialog results.
             OpenFileDialog filePicker = new OpenFileDialog();
             filePicker.Title = "Välj en excelfil";
@@ -36,12 +41,22 @@ namespace Matstafett
             }
         }
 
+        /// <summary>
+        /// OnClick handler for the Clear log button
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void ClearLog_Click(object sender, EventArgs e)
         {
             log.Clear();
         }
 
-        private void start_Click(object sender, EventArgs e)
+        /// <summary>
+        /// OnClick Handler for the start Button
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Start_Click(object sender, EventArgs e)
         {
             if (!generateLetters.Checked == true)
             {
@@ -57,10 +72,11 @@ namespace Matstafett
             GenerateLineup();
         }
 
-        /* GenerateLineup
-         * Main Function that calls all other functions used.
-         * Once this function is called everything is autmatic 
-         * Params: None */
+         /// <summary>
+         /// Main Function that calls all other functions used.
+         /// Once this function is called everything is generate autmatically.
+         /// So should not be called until all options are handled.
+         /// </summary>
         private void GenerateLineup()
         {
             // Initiate variables.
@@ -105,30 +121,52 @@ namespace Matstafett
             }
 
             // Randomize array index. 
+            LogOutput("Skapar en slumpad lista... Faktiskt lika lång som antalet deltagare :)");
             participants.GenerateRandomizedIndex();
-            foreach(int i in participants.RandomizedIndex)
-            {
-                LogOutput(i.ToString());
-            }
+
+            // Place the participants into groups.
+            LogOutput("Använder min slumpade lista för att skyffla runt deltagarna");
+            participants.PlaceParticipantsIntoGroups();
 
         }
 
-        /* LogOutput
-         * Short function to log output to the log textbox
-         * Param: text: the string to log. */
+        /// <summary>
+        /// Short function to log output to the log textbox
+        /// </summary>
+        /// <param name="text">The string to add to the log</param>
         private void LogOutput(string text)
         {
             log.AppendText(text + Environment.NewLine);
         }
 
-        private void instruktionerToolStripMenuItem_Click(object sender, EventArgs e)
+        /// <summary>
+        /// OnClick handler for the menu item Instruktioner
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void InstruktionerToolStripMenuItem_Click(object sender, EventArgs e)
         {
             new Instructions().ShowDialog();
         }
 
-        private void kravPåFilenToolStripMenuItem_Click(object sender, EventArgs e)
+        /// <summary>
+        /// OnClick handler for the Menu "Krav på Excelfilen"
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void KravPåFilenToolStripMenuItem_Click(object sender, EventArgs e)
         {
             new ExcelFileRequirements().ShowDialog();
+        }
+
+        /// <summary>
+        /// Show the About boc
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void toolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            new AboutBox().ShowDialog();
         }
     }
 }

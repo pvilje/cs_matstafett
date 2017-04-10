@@ -37,8 +37,9 @@
             this.clearLog = new System.Windows.Forms.Button();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.hjälpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.kravPåFilenToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.instruktionerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.kravPåFilenToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -50,7 +51,7 @@
             this.browseButton.TabIndex = 0;
             this.browseButton.Text = "Browse";
             this.browseButton.UseVisualStyleBackColor = true;
-            this.browseButton.Click += new System.EventHandler(this.browseButton_Click);
+            this.browseButton.Click += new System.EventHandler(this.BrowseButton_Click);
             // 
             // fileBox
             // 
@@ -89,7 +90,7 @@
             this.Start.TabIndex = 4;
             this.Start.Text = "Kör!";
             this.Start.UseVisualStyleBackColor = true;
-            this.Start.Click += new System.EventHandler(this.start_Click);
+            this.Start.Click += new System.EventHandler(this.Start_Click);
             // 
             // log
             // 
@@ -114,7 +115,8 @@
             // menuStrip1
             // 
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.hjälpToolStripMenuItem});
+            this.hjälpToolStripMenuItem,
+            this.toolStripMenuItem1});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Size = new System.Drawing.Size(630, 24);
@@ -130,19 +132,27 @@
             this.hjälpToolStripMenuItem.Size = new System.Drawing.Size(47, 20);
             this.hjälpToolStripMenuItem.Text = "Hjälp";
             // 
-            // kravPåFilenToolStripMenuItem
-            // 
-            this.kravPåFilenToolStripMenuItem.Name = "kravPåFilenToolStripMenuItem";
-            this.kravPåFilenToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.kravPåFilenToolStripMenuItem.Text = "Krav på filen";
-            this.kravPåFilenToolStripMenuItem.Click += new System.EventHandler(this.kravPåFilenToolStripMenuItem_Click);
-            // 
             // instruktionerToolStripMenuItem
             // 
             this.instruktionerToolStripMenuItem.Name = "instruktionerToolStripMenuItem";
-            this.instruktionerToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.instruktionerToolStripMenuItem.Size = new System.Drawing.Size(141, 22);
             this.instruktionerToolStripMenuItem.Text = "Instruktioner";
-            this.instruktionerToolStripMenuItem.Click += new System.EventHandler(this.instruktionerToolStripMenuItem_Click);
+            this.instruktionerToolStripMenuItem.Click += new System.EventHandler(this.InstruktionerToolStripMenuItem_Click);
+            // 
+            // kravPåFilenToolStripMenuItem
+            // 
+            this.kravPåFilenToolStripMenuItem.Name = "kravPåFilenToolStripMenuItem";
+            this.kravPåFilenToolStripMenuItem.Size = new System.Drawing.Size(141, 22);
+            this.kravPåFilenToolStripMenuItem.Text = "Krav på filen";
+            this.kravPåFilenToolStripMenuItem.Click += new System.EventHandler(this.KravPåFilenToolStripMenuItem_Click);
+            // 
+            // toolStripMenuItem1
+            // 
+            this.toolStripMenuItem1.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
+            this.toolStripMenuItem1.Name = "toolStripMenuItem1";
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(24, 20);
+            this.toolStripMenuItem1.Text = "?";
+            this.toolStripMenuItem1.Click += new System.EventHandler(this.toolStripMenuItem1_Click);
             // 
             // MainWindow
             // 
@@ -180,6 +190,7 @@
         private System.Windows.Forms.ToolStripMenuItem hjälpToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem instruktionerToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem kravPåFilenToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem1;
     }
 }
 

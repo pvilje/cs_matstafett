@@ -25,15 +25,19 @@ namespace Matstafett
             this.NumberOfParticipants = 0;
         }
 
+        /// <summary>
+        /// Adds a new participant to the list 
+        /// </summary>
+        /// <param name="newParticipant">The new participant</param>
         public void AddParticipant(Participant newParticipant)
         {
             this.All.Add(newParticipant);
         }
 
-        /* ValidateNumberOfParticipants
-         * Verifies the number of found participants. 
-         * Returns: 0 - OK, 1 - too few, 2 - not a factor of three.
-         */
+        /// <summary>
+        /// Verifies the number of found participants. 
+        /// </summary>
+        /// <returns>0 - OK, 1 - too few, 2 - not a factor of three.</returns>
         public int ValidateNumberOfParticipants()
         {
             if (this.All.Count < 9)
@@ -49,9 +53,36 @@ namespace Matstafett
             return 0;
         }
 
+        /// <summary>
+        /// Generates a ranodimized list of integers 
+        /// of the same length as the number of participants
+        /// </summary>
         public void GenerateRandomizedIndex()
         {
-            this.RandomizedIndex = Enumerable.Range(0, this.NumberOfParticipants + 1).ToArray();
+            this.RandomizedIndex = new Shuffles().FisherYatesShuffleArray(this.NumberOfParticipants);
+        }
+
+        /// <summary>
+        /// Place participants into their groups.
+        /// </summary>
+        public void PlaceParticipantsIntoGroups()
+        {
+            Participant[] unorderedParticipantArray = new Participant[this.NumberOfParticipants];
+            for (int unorderIndex = 0; unorderIndex < this.NumberOfParticipants; unorderIndex++)
+            {
+                if (unorderIndex < this.ParticipantsPerGroup)
+                {
+                    this.StarterHosts.Add(this.All[this.RandomizedIndex[unorderIndex]]);
+                }
+                else if (unorderIndex < this.ParticipantsPerGroup * 2)
+                {
+                    this.MaincourseHosts.Add(this.All[RandomizedIndex[unorderIndex]]);
+                }
+                else
+                {
+                    this.DesertHosts.Add(this.All[RandomizedIndex[unorderIndex]]);
+                }
+            }
         }
     }
 }

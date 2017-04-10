@@ -18,3 +18,4 @@ C:\Users\Patrik\Source\Repos\cs_matstafett\cs_matstafett\Matstafett\obj\Debug\Ma
 C:\Users\Patrik\Source\Repos\cs_matstafett\cs_matstafett\Matstafett\obj\Debug\Matstafett.pdb
 C:\Users\Patrik\Source\Repos\cs_matstafett\cs_matstafett\Matstafett\obj\Debug\Matstafett.Instructions.resources
 C:\Users\Patrik\Source\Repos\cs_matstafett\cs_matstafett\Matstafett\obj\Debug\Matstafett.ExcelFileRequirements.resources
+C:\Users\Patrik\Source\Repos\cs_matstafett\cs_matstafett\Matstafett\obj\Debug\Matstafett.AboutBox.resources
