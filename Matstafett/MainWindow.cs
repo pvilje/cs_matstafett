@@ -14,6 +14,10 @@ namespace Matstafett
 {
     public partial class MainWindow : Form
     {
+        public string shortFileName;
+        public string fullFileName;
+        public string directory;
+
         public MainWindow()
         {
             InitializeComponent();
@@ -32,9 +36,11 @@ namespace Matstafett
             filePicker.Filter = "Excel (*.xlsx)|*.xlsx";
             if (filePicker.ShowDialog() == DialogResult.OK)
             {
-                // Populate the file name box and hidden file name box
-                fileBox.Text = filePicker.FileName;
-                hiddenBoxFileName.Text = filePicker.SafeFileName;
+                // Populate the file name box and save the file details.
+                fullFileName = filePicker.FileName;
+                shortFileName = filePicker.SafeFileName;
+                directory = System.IO.Path.GetDirectoryName(filePicker.FileName);
+                fileBox.Text = fullFileName;
 
                 Start.Enabled = true;
                 LogOutput(string.Format("Vald fil: {0}", filePicker.SafeFileName));
@@ -82,27 +88,26 @@ namespace Matstafett
             // Initiate variables.
             // *******************
             FoodRelayParticipants participants = new FoodRelayParticipants();
-            string shortFileName = hiddenBoxFileName.Text;
-            string fullFileName = fileBox.Text;
 
             // Get the participant list from the selected excel file. 
             // ******************************************************
             LogOutput("Letar efter Deltagare i filen.");
-            var excelFileParticipantList = new Excel.Application();
-            Excel.Workbook wb = excelFileParticipantList.Workbooks.Open(fullFileName, ReadOnly: true);
-            Excel.Worksheet ws = wb.Sheets[1];
-            for (int i = 1; i <= ws.UsedRange.Rows.Count; i++)
+
+            ExcelHandler excelFileParticipants = new ExcelHandler();
+            excelFileParticipants.ExcelOpenSpreadSheet(fullFileName);
+            excelFileParticipants.ExcelSelectWorkSheet(1);
+            for (int i = 1; i <= excelFileParticipants.WorkSheet.UsedRange.Rows.Count; i++)
             {
-                if (ws.Cells[i, "A"].text != "")
+                if (excelFileParticipants.WorkSheet.Cells[i, "A"].text != "")
                 {
                     participants.AddParticipant(new Participant(
-                        name: ws.Cells[i, "A"].text,
-                        contact: ws.Cells[i, "B"].text,
-                        allergie: ws.Cells[i, "C"].text
+                        name: excelFileParticipants.WorkSheet.Cells[i, "A"].text,
+                        contact: excelFileParticipants.WorkSheet.Cells[i, "B"].text,
+                        allergie: excelFileParticipants.WorkSheet.Cells[i, "C"].text
                     ));
                 }
             }
-            wb.Close();
+            excelFileParticipants.ExcelCloseSpreadSheet();
             LogOutput(string.Format("Hittade {0} deltagare.", participants.All.Count));
 
             // Verify the number of Participants
@@ -127,6 +132,24 @@ namespace Matstafett
             // Place the participants into groups.
             LogOutput("Använder min slumpade lista för att skyffla runt deltagarna");
             participants.PlaceParticipantsIntoGroups();
+
+            // Create the final Lineup
+            LogOutput("Genererar den slutgiltiga uppställningen");
+            participants.GenerateLineup();
+
+            // Save to Excel.
+            string excelResultFileName = "resultat_" + shortFileName;
+            int fileNameInt = 0;
+            
+            while (System.IO.File.Exists(
+                System.IO.Path.Combine(directory, excelResultFileName)))
+            {
+                fileNameInt++;
+                excelResultFileName = string.Format("resultat{0}_{1}",
+                    fileNameInt,
+                    shortFileName);
+            }
+            LogOutput(excelResultFileName);
 
         }
 
@@ -164,7 +187,7 @@ namespace Matstafett
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void toolStripMenuItem1_Click(object sender, EventArgs e)
+        private void ToolStripMenuItem1_Click(object sender, EventArgs e)
         {
             new AboutBox().ShowDialog();
         }

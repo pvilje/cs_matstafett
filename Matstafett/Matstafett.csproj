@@ -63,6 +63,7 @@
     <Compile Include="ExcelFileRequirements.Designer.cs">
       <DependentUpon>ExcelFileRequirements.cs</DependentUpon>
     </Compile>
+    <Compile Include="ExcelHandler.cs" />
     <Compile Include="Instructions.cs">
       <SubType>Form</SubType>
     </Compile>

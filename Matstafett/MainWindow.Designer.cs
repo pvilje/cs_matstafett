@@ -30,7 +30,6 @@
         {
             this.browseButton = new System.Windows.Forms.Button();
             this.fileBox = new System.Windows.Forms.TextBox();
-            this.hiddenBoxFileName = new System.Windows.Forms.TextBox();
             this.generateLetters = new System.Windows.Forms.CheckBox();
             this.Start = new System.Windows.Forms.Button();
             this.log = new System.Windows.Forms.TextBox();
@@ -60,14 +59,6 @@
             this.fileBox.ReadOnly = true;
             this.fileBox.Size = new System.Drawing.Size(416, 20);
             this.fileBox.TabIndex = 1;
-            // 
-            // hiddenBoxFileName
-            // 
-            this.hiddenBoxFileName.Location = new System.Drawing.Point(40, 27);
-            this.hiddenBoxFileName.Name = "hiddenBoxFileName";
-            this.hiddenBoxFileName.Size = new System.Drawing.Size(100, 20);
-            this.hiddenBoxFileName.TabIndex = 2;
-            this.hiddenBoxFileName.Visible = false;
             // 
             // generateLetters
             // 
@@ -152,7 +143,7 @@
             this.toolStripMenuItem1.Name = "toolStripMenuItem1";
             this.toolStripMenuItem1.Size = new System.Drawing.Size(24, 20);
             this.toolStripMenuItem1.Text = "?";
-            this.toolStripMenuItem1.Click += new System.EventHandler(this.toolStripMenuItem1_Click);
+            this.toolStripMenuItem1.Click += new System.EventHandler(this.ToolStripMenuItem1_Click);
             // 
             // MainWindow
             // 
@@ -163,7 +154,6 @@
             this.Controls.Add(this.log);
             this.Controls.Add(this.Start);
             this.Controls.Add(this.generateLetters);
-            this.Controls.Add(this.hiddenBoxFileName);
             this.Controls.Add(this.fileBox);
             this.Controls.Add(this.browseButton);
             this.Controls.Add(this.menuStrip1);
@@ -181,7 +171,6 @@
 
         private System.Windows.Forms.Button browseButton;
         private System.Windows.Forms.TextBox fileBox;
-        private System.Windows.Forms.TextBox hiddenBoxFileName;
         private System.Windows.Forms.CheckBox generateLetters;
         private System.Windows.Forms.Button Start;
         private System.Windows.Forms.TextBox log;

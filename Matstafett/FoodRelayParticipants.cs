@@ -8,20 +8,38 @@ namespace Matstafett
 {
     public class FoodRelayParticipants
     {
-        public List<Participant> StarterHosts { get; set; }
-        public List<Participant> MaincourseHosts { get; set; }
-        public List<Participant> DesertHosts { get; set; }
+        public List<Participant> AllStarterHosts { get; set; }
+        public List<Participant> AllMaincourseHosts { get; set; }
+        public List<Participant> AllDesertHosts { get; set; }
         public List<Participant> All { get; set; }
+        public List<Participant> FinalStarterHosts { get; set; }
+        public List<Participant> FinalStarterGuests1 { get; set; }
+        public List<Participant> FinalStarterGuests2 { get; set; }
+        public List<Participant> FinalMainCourseHosts { get; set; }
+        public List<Participant> FinalMainCourseGuests1 { get; set; }
+        public List<Participant> FinalMainCourseGuests2 { get; set; }
+        public List<Participant> FinalDesertHosts { get; set; }
+        public List<Participant> FinalDesertGuests1 { get; set; }
+        public List<Participant> FinalDesertGuests2 { get; set; }
         public int ParticipantsPerGroup { get; private set; }
         public int NumberOfParticipants { get; private set; }
         public int[] RandomizedIndex { get; private set; }
 
         public FoodRelayParticipants()
         {
-            this.StarterHosts = new List<Participant>();
-            this.MaincourseHosts = new List<Participant>();
-            this.DesertHosts = new List<Participant>();
+            this.AllStarterHosts = new List<Participant>();
+            this.AllMaincourseHosts = new List<Participant>();
+            this.AllDesertHosts = new List<Participant>();
             this.All = new List<Participant>();
+            this.FinalStarterHosts = new List<Participant>();
+            this.FinalStarterGuests1 = new List<Participant>();
+            this.FinalStarterGuests2 = new List<Participant>();
+            this.FinalMainCourseHosts = new List<Participant>();
+            this.FinalMainCourseGuests1 = new List<Participant>();
+            this.FinalMainCourseGuests2 = new List<Participant>();
+            this.FinalDesertHosts = new List<Participant>();
+            this.FinalDesertGuests1 = new List<Participant>();
+            this.FinalDesertGuests2 = new List<Participant>();
             this.NumberOfParticipants = 0;
         }
 
@@ -72,16 +90,50 @@ namespace Matstafett
             {
                 if (unorderIndex < this.ParticipantsPerGroup)
                 {
-                    this.StarterHosts.Add(this.All[this.RandomizedIndex[unorderIndex]]);
+                    this.AllStarterHosts.Add(this.All[this.RandomizedIndex[unorderIndex]]);
                 }
                 else if (unorderIndex < this.ParticipantsPerGroup * 2)
                 {
-                    this.MaincourseHosts.Add(this.All[RandomizedIndex[unorderIndex]]);
+                    this.AllMaincourseHosts.Add(this.All[RandomizedIndex[unorderIndex]]);
                 }
                 else
                 {
-                    this.DesertHosts.Add(this.All[RandomizedIndex[unorderIndex]]);
+                    this.AllDesertHosts.Add(this.All[RandomizedIndex[unorderIndex]]);
                 }
+            }
+        }
+
+        /// <summary>
+        /// Create the final lineup.
+        /// </summary>
+        public void GenerateLineup()
+        {
+            int baseIndex = 0;
+            int offset1 = 1;
+            int offset2 = 2;
+            while(baseIndex < ParticipantsPerGroup)
+            {
+                offset1 = (offset1 >= ParticipantsPerGroup) ? 0 : offset1;
+                offset2 = (offset2 >= ParticipantsPerGroup) ? 0 : offset2;
+
+                // Starters
+                FinalStarterHosts.Add(AllStarterHosts[baseIndex]);
+                FinalStarterGuests1.Add(AllMaincourseHosts[baseIndex]);
+                FinalStarterGuests2.Add(AllDesertHosts[baseIndex]);
+
+                // Main Course
+                FinalMainCourseHosts.Add(AllMaincourseHosts[offset1]);
+                FinalMainCourseGuests1.Add(AllStarterHosts[baseIndex]);
+                FinalMainCourseGuests2.Add(AllDesertHosts[offset2]);
+
+                // Desert
+                FinalDesertHosts.Add(AllDesertHosts[offset1]);
+                FinalDesertGuests1.Add(AllStarterHosts[baseIndex]);
+                FinalDesertGuests2.Add(AllMaincourseHosts[offset2]);
+
+                baseIndex++;
+                offset1++;
+                offset2++;
             }
         }
     }
