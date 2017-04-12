@@ -12,6 +12,7 @@ namespace Matstafett
         public List<Participant> AllMaincourseHosts { get; set; }
         public List<Participant> AllDesertHosts { get; set; }
         public List<Participant> All { get; set; }
+        public List<Participant> AllSorted { get; set; }
         public List<Participant> FinalStarterHosts { get; set; }
         public List<Participant> FinalStarterGuests1 { get; set; }
         public List<Participant> FinalStarterGuests2 { get; set; }
@@ -31,6 +32,7 @@ namespace Matstafett
             this.AllMaincourseHosts = new List<Participant>();
             this.AllDesertHosts = new List<Participant>();
             this.All = new List<Participant>();
+            this.AllSorted = new List<Participant>();
             this.FinalStarterHosts = new List<Participant>();
             this.FinalStarterGuests1 = new List<Participant>();
             this.FinalStarterGuests2 = new List<Participant>();
@@ -85,20 +87,23 @@ namespace Matstafett
         /// </summary>
         public void PlaceParticipantsIntoGroups()
         {
-            Participant[] unorderedParticipantArray = new Participant[this.NumberOfParticipants];
+            foreach(int index in RandomizedIndex)
+            {
+                AllSorted.Add(All[index]);
+            }
             for (int unorderIndex = 0; unorderIndex < this.NumberOfParticipants; unorderIndex++)
             {
                 if (unorderIndex < this.ParticipantsPerGroup)
                 {
-                    this.AllStarterHosts.Add(this.All[this.RandomizedIndex[unorderIndex]]);
+                    this.AllStarterHosts.Add(this.AllSorted[this.RandomizedIndex[unorderIndex]]);
                 }
                 else if (unorderIndex < this.ParticipantsPerGroup * 2)
                 {
-                    this.AllMaincourseHosts.Add(this.All[RandomizedIndex[unorderIndex]]);
+                    this.AllMaincourseHosts.Add(this.AllSorted[RandomizedIndex[unorderIndex]]);
                 }
                 else
                 {
-                    this.AllDesertHosts.Add(this.All[RandomizedIndex[unorderIndex]]);
+                    this.AllDesertHosts.Add(this.AllSorted[RandomizedIndex[unorderIndex]]);
                 }
             }
         }

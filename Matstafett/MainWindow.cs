@@ -91,7 +91,7 @@ namespace Matstafett
 
             // Get the participant list from the selected excel file. 
             // ******************************************************
-            LogOutput("Letar efter Deltagare i filen.");
+            LogOutput("Letar efter deltagare i filen.");
 
             ExcelHandler excelFileParticipants = new ExcelHandler();
             excelFileParticipants.ExcelOpenSpreadSheet(fullFileName);
@@ -137,7 +137,7 @@ namespace Matstafett
             LogOutput("Genererar den slutgiltiga uppställningen");
             participants.GenerateLineup();
 
-            // Save to Excel.
+            // Generate new filename for the resulting excel file.
             string excelResultFileName = "resultat_" + shortFileName;
             int fileNameInt = 0;
             
@@ -149,7 +149,35 @@ namespace Matstafett
                     fileNameInt,
                     shortFileName);
             }
-            LogOutput(excelResultFileName);
+            string excelResultFullFileName = System.IO.Path.Combine(directory, excelResultFileName);
+
+            // Open a new Excel WorkBook
+            LogOutput("Öppnar en ny excelfil och sparar resultatet:" + excelResultFileName);
+            ExcelHandler excelResultFile = new ExcelHandler();
+            excelResultFile.ExcelCreateSpreadSheet();
+
+            // Write all participants to sheet 1
+            excelResultFile.ExcelSelectWorkSheet(1);
+            excelResultFile.WorkSheet.Name = "Deltagarlista";
+            excelResultFile.AddParticipantList(participants.AllSorted);
+
+            // Write a nice summary to sheet 2
+            excelResultFile.ExcelSelectWorkSheet(2);
+            excelResultFile.WorkSheet.Name = "Matstafett uppställning";
+            excelResultFile.AddFoodRelayLineUp(
+                participants.FinalStarterHosts,
+                participants.FinalStarterGuests1,
+                participants.FinalStarterGuests2,
+                participants.FinalMainCourseHosts,
+                participants.FinalMainCourseGuests1,
+                participants.FinalMainCourseGuests2,
+                participants.FinalDesertHosts,
+                participants.FinalDesertGuests1,
+                participants.FinalDesertGuests2);
+
+            // Save the excel file
+            excelResultFile.ExcelSaveAsAndClose(excelResultFullFileName);
+            LogOutput("Excelfil skapad: " + excelResultFullFileName);
 
         }
 
