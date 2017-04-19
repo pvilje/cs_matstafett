@@ -44,6 +44,8 @@ namespace Matstafett
 
                 Start.Enabled = true;
                 LogOutput(string.Format("Vald fil: {0}", filePicker.SafeFileName));
+
+                openFolder.Visible = false;
             }
         }
 
@@ -78,11 +80,11 @@ namespace Matstafett
             GenerateLineup();
         }
 
-         /// <summary>
-         /// Main Function that calls all other functions used.
-         /// Once this function is called everything is generate autmatically.
-         /// So should not be called until all options are handled.
-         /// </summary>
+        /// <summary>
+        /// Main Function that calls all other functions used.
+        /// Once this function is called everything is generate autmatically.
+        /// So should not be called until all options are handled.
+        /// </summary>
         private void GenerateLineup()
         {
             // Initiate variables.
@@ -140,7 +142,7 @@ namespace Matstafett
             // Generate new filename for the resulting excel file.
             string excelResultFileName = "resultat_" + shortFileName;
             int fileNameInt = 0;
-            
+
             while (System.IO.File.Exists(
                 System.IO.Path.Combine(directory, excelResultFileName)))
             {
@@ -179,6 +181,38 @@ namespace Matstafett
             excelResultFile.ExcelSaveAsAndClose(excelResultFullFileName);
             LogOutput("Excelfil skapad: " + excelResultFullFileName);
 
+
+            // Generate new filename for the resulting word file.
+            string wordLettersFilename = "resultat_" + System.IO.Path.GetFileNameWithoutExtension(shortFileName) + ".docx";
+            fileNameInt = 0;
+
+            while (System.IO.File.Exists(
+                System.IO.Path.Combine(directory, wordLettersFilename)))
+            {
+                fileNameInt++;
+                wordLettersFilename = string.Format("resultat{0}_{1}",
+                    fileNameInt,
+                    System.IO.Path.GetFileNameWithoutExtension(shortFileName) + ".docx");
+            }
+            string wordLettersFullFilename = System.IO.Path.Combine(directory, wordLettersFilename);
+
+            LogOutput("Öppnar ett nytt worddokument för att skriva lite brev...");
+            // Generate Word Document
+            WordHandler wordFile = new WordHandler();
+            wordFile.WordOpenNewDocument();
+
+            wordFile.WordAddText("hej hej");
+            wordFile.WordAddPageBreak();
+            wordFile.WordAddText("hej hej igen");
+
+            // Save the word file.
+            wordFile.WordSaveAndClose(System.IO.Path.Combine(wordLettersFullFilename));
+            LogOutput("Worddokument skapat: " + wordLettersFullFilename);
+
+            // Activate the open folder button.
+            openFolder.Visible = true;
+
+            // Todo fix word documents.
         }
 
         /// <summary>
@@ -218,6 +252,16 @@ namespace Matstafett
         private void ToolStripMenuItem1_Click(object sender, EventArgs e)
         {
             new AboutBox().ShowDialog();
+        }
+
+        /// <summary>
+        /// Open the output folder.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void OpenFolder_Click(object sender, EventArgs e)
+        {
+            System.Diagnostics.Process.Start(@"" + directory);
         }
     }
 }

@@ -11,6 +11,7 @@ namespace Matstafett
     {
         public Excel.Application XlApp { get; set; }
         public Excel.Workbook WorkBook { get; set; }
+        public Excel.Workbooks WorkBooks { get; set; }
         public Excel.Worksheet WorkSheet { get; set; }
 
         public ExcelHandler()
@@ -25,7 +26,8 @@ namespace Matstafett
         /// <param name="readOnly">if read only or not</param>
         public void ExcelOpenSpreadSheet(string thisFileName, bool readOnly = true)
         {
-            WorkBook = XlApp.Workbooks.Open(
+            WorkBooks = XlApp.Workbooks;
+            WorkBook = WorkBooks.Open(
                 thisFileName, 
                 ReadOnly: readOnly);
         }
@@ -111,34 +113,154 @@ namespace Matstafett
             List<Participant> desertGuest1,
             List<Participant> desertGuest2)
         {
+            void addParticipantRange(List<Participant> participants, Excel.Range range)
+            {
+                int index = 0;
+                foreach(Participant participant in participants)
+                {
+                    index++;
+                    range.Cells[index, 1] = participant.Name;
+                }
+            }
+
+            void addSummaryRange(
+                Excel.Style style,
+                List<Participant> hosts,
+                List<Participant> guests1,
+                List<Participant> guests2,
+                Excel.Range range)
+            {
+                range.Cells[1, 1] = "Värd";
+                range.Cells[1, 2] = "Gäst 1";
+                range.Cells[1, 3] = "Gäst 2";
+                range.Range["A1", "C1"].Style = style;
+                int index = 1;
+                foreach (Participant host in hosts)
+                {
+                    index++;
+                    range.Cells[index, 1] = host.Name;
+                    range.Cells[index, 2] = guests1[index - 2].Name;
+                    range.Cells[index, 3] = guests2[index - 2].Name;
+                }
+            }
+
             // Set up styles.
             Excel.Style h1 = WorkBook.Styles.Add("h1");
             h1.Font.Size = 15;
             h1.Font.Bold = true;
             h1.Font.ColorIndex = 5;  // https://msdn.microsoft.com/en-us/library/cc296089(v=office.12).aspx
-            //h1.Borders.ColorIndex = 5;
-            //h1.Borders[Excel.XlBordersIndex.xlEdgeBottom].Weight = 2d;
 
             Excel.Style h1Center = WorkBook.Styles.Add("h1Center");
             h1Center.Font.Size = 15;
             h1Center.Font.Bold = true;
             h1Center.Font.ColorIndex = 5;
-            //h1.Borders.ColorIndex = 5;
-            //h1.Borders[Excel.XlBordersIndex.xlEdgeBottom].Weight = Excel.XlBorderWeight.xlThick;
             h1Center.HorizontalAlignment = Excel.XlHAlign.xlHAlignCenter;
-            //(name = "h1", font = Font(size = 15, bold = True, color = "1f497d"),
-            //            border = Border(bottom = Side(style = "thick", color = "4f81bd")
 
+            Excel.Style h2 = WorkBook.Styles.Add("h2");
+            h2.Font.Size = 13;
+            h2.Font.Bold = true;
+            h2.Font.ColorIndex = 32;
+
+            Excel.Style h2center = WorkBook.Styles.Add("h2Center");
+            h2center.Font.Size = 13;
+            h2center.Font.Bold = true;
+            h2center.Font.ColorIndex = 32;
+            h2center.HorizontalAlignment = Excel.XlHAlign.xlHAlignCenter;
+
+            // Add summary to column 1
+            // Add detailed content to column 3-5
+            // ==================================
+
+            // Headers
             Excel.Range heading = WorkSheet.Cells[1, 1];
-            heading.Cells[1,1] = "Sammanfattning";
+            heading.Cells[1, 1] = "Sammanfattning";
             heading.Style = h1;
 
-            Excel.Range heading2 = WorkSheet.Cells.Range["C1", "E1"];
-            heading2.Cells[1, 1] = "Förrätt";
-            heading2.Style = h1Center;
-            heading2.MergeCells = true;
+            // Starters
+            Excel.Range starterHeader = WorkSheet.Cells[2, 1];
+            starterHeader.Cells[1, 1] = "Värd Förrätt:";
+            starterHeader.Style = h2;
 
-            // Add helper functions to add the repeating data.
+            addParticipantRange(
+                starterHost, WorkSheet.Cells.Range[
+                    string.Format("A3"),
+                    string.Format("A{0}",starterHost.Count + 3)
+                    ]
+                );
+
+            Excel.Range headingStarterMerged = WorkSheet.Cells.Range["C1", "E1"];
+            headingStarterMerged.Cells[1, 1] = "Förrätt";
+            headingStarterMerged.Style = h1Center;
+            headingStarterMerged.MergeCells = true;
+
+            addSummaryRange(
+                h2center,
+                starterHost, 
+                starterGuest1,
+                starterGuest2,
+                WorkSheet.Cells.Range[
+                    string.Format("C2"),
+                    string.Format("E{0}", starterHost.Count + 3)
+                    ]
+                );
+
+            // Main Course
+            Excel.Range mainHeader = WorkSheet.Cells[mainHost.Count + 5, 1];
+            mainHeader.Cells[1, 1] = "Värd Huvudrätt:";
+            mainHeader.Style = h2;
+ 
+            addParticipantRange(mainHost, WorkSheet.Cells.Range[
+                string.Format("A{0}", mainHost.Count + 6),
+                string.Format("A{0}", mainHost.Count * 2 + 6)
+                ]);
+
+            Excel.Range headingMainMerged = WorkSheet.Cells.Range[
+                string.Format("C{0}",mainHost.Count + 4), 
+                string.Format("E{0}", mainHost.Count + 4)
+                ];
+            headingMainMerged.Cells[1, 1] = "Huvudrätt";
+            headingMainMerged.Style = h1Center;
+            headingMainMerged.MergeCells = true;
+
+            addSummaryRange(
+                h2center,
+                mainHost,
+                mainGuest1,
+                mainGuest2,
+                WorkSheet.Cells.Range[
+                    string.Format("C{0}", mainHost.Count + 5),
+                    string.Format("E{0}", mainHost.Count * 2 + 5)
+                    ]
+                );
+
+            // Desert
+            Excel.Range desertHeader = WorkSheet.Cells[desertHost.Count*2 + 8, 1];
+            desertHeader.Cells[1, 1] = "Värd Efterrätt:";
+            desertHeader.Style = h2;
+
+            addParticipantRange(desertHost, WorkSheet.Cells.Range[
+                string.Format("A{0}", desertHost.Count * 2 + 9),
+                string.Format("A{0}", desertHost.Count * 3 + 9)
+                ]);
+
+            Excel.Range headingDesertMerged = WorkSheet.Cells.Range[
+                string.Format("C{0}", desertHost.Count * 2 + 7),
+                string.Format("E{0}", desertHost.Count * 2 + 7)
+                ];
+            headingDesertMerged.Cells[1, 1] = "Huvudrätt";
+            headingDesertMerged.Style = h1Center;
+            headingDesertMerged.MergeCells = true;
+
+            addSummaryRange(
+                h2center,
+                desertHost,
+                desertGuest1,
+                desertGuest2,
+                WorkSheet.Cells.Range[
+                    string.Format("C{0}", desertHost.Count * 2 + 8),
+                    string.Format("E{0}", desertHost.Count * 3 + 8)
+                    ]
+                );
 
             WorkSheet.Columns.AutoFit();
         }
