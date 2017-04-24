@@ -34,17 +34,24 @@ namespace Matstafett
             WordStyleName = WordDocument.Styles.Add("Namn");
             WordStyleNormalText = WordDocument.Styles.Add("Normal Text");
             WordStyleItalicText = WordDocument.Styles.Add("Italic Text");
+
             WordStyleName.Font.Underline = Word.WdUnderline.wdUnderlineSingle;
             WordStyleName.Font.Size = 12;
             WordStyleName.ParagraphFormat.Alignment = Word.WdParagraphAlignment.wdAlignParagraphCenter;
+            WordStyleName.Font.Italic = 0;
             WordStyleName.Font.Name = "Lucida Calligraphy";
 
+            WordStyleNormalText.Font.Underline = Word.WdUnderline.wdUnderlineNone;
             WordStyleNormalText.Font.Size = 12;
             WordStyleNormalText.ParagraphFormat.Alignment = Word.WdParagraphAlignment.wdAlignParagraphCenter;
+            WordStyleNormalText.Font.Italic = 0;
+            WordStyleNormalText.Font.Name = "Calibri";
 
+            WordStyleItalicText.Font.Underline = Word.WdUnderline.wdUnderlineNone;
             WordStyleItalicText.Font.Size = 12;
             WordStyleItalicText.ParagraphFormat.Alignment = Word.WdParagraphAlignment.wdAlignParagraphCenter;
             WordStyleItalicText.Font.Italic = 1;
+            WordStyleItalicText.Font.Name = "Calibri";
         }
 
         /// <summary>
@@ -66,10 +73,33 @@ namespace Matstafett
             this.WordApp.Quit();
         }
 
-
-        public void WordAddText(string text)
+        /// <summary>
+        /// Adds a paragraph to the document with the specified text
+        /// </summary>
+        /// <param name="text">The string to add</param>
+        /// <param name="style">normal, italic or name</param>
+        public void WordAddText(string text, string style = "normal")
         {
-            WordDocument.Words.Last.Text = text;
+            Word.Style st = null;
+            if (style == "normal")
+            {
+                st = this.WordStyleNormalText;
+            }
+            else if (style == "italic")
+            {
+                st = this.WordStyleItalicText;
+            }
+            else if (style == "name")
+            {
+                st = this.WordStyleName;
+            }
+
+            // Word.Paragraph p = WordDocument.Words.Last.Paragraphs.Add();
+            Word.Paragraph p = WordDocument.Paragraphs.Add();
+
+            p.Range.Text = text;
+            p.Range.set_Style(st);
+            p.Range.InsertParagraphAfter();
         }
 
         /// <summary>

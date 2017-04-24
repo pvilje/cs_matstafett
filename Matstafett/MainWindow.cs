@@ -181,38 +181,142 @@ namespace Matstafett
             excelResultFile.ExcelSaveAsAndClose(excelResultFullFileName);
             LogOutput("Excelfil skapad: " + excelResultFullFileName);
 
-
-            // Generate new filename for the resulting word file.
-            string wordLettersFilename = "resultat_" + System.IO.Path.GetFileNameWithoutExtension(shortFileName) + ".docx";
-            fileNameInt = 0;
-
-            while (System.IO.File.Exists(
-                System.IO.Path.Combine(directory, wordLettersFilename)))
+            // Check if a word document should be used.
+            if (generateLetters.Checked)
             {
-                fileNameInt++;
-                wordLettersFilename = string.Format("resultat{0}_{1}",
-                    fileNameInt,
-                    System.IO.Path.GetFileNameWithoutExtension(shortFileName) + ".docx");
+                // Generate new filename for the resulting word file.
+                string wordLettersFilename = "resultat_" + System.IO.Path.GetFileNameWithoutExtension(shortFileName) + ".docx";
+                fileNameInt = 0;
+
+                while (System.IO.File.Exists(
+                    System.IO.Path.Combine(directory, wordLettersFilename)))
+                {
+                    fileNameInt++;
+                    wordLettersFilename = string.Format("resultat{0}_{1}",
+                        fileNameInt,
+                        System.IO.Path.GetFileNameWithoutExtension(shortFileName) + ".docx");
+                }
+                string wordLettersFullFilename = System.IO.Path.Combine(directory, wordLettersFilename);
+
+                LogOutput("Öppnar ett nytt worddokument för att skriva lite brev...");
+                // Generate Word Document
+                WordHandler wordFile = new WordHandler();
+                wordFile.WordOpenNewDocument();
+                
+                // Generate the letters to be sent in advance.
+                AddHostToWord("Förrätt", participants.FinalStarterHosts, participants.FinalStarterGuests1, participants.FinalStarterGuests2, wordFile);
+                AddHostToWord("Huvudrätt", participants.FinalMainCourseHosts, participants.FinalMainCourseGuests1, participants.FinalMainCourseGuests2, wordFile);
+                AddHostToWord("Efterrätt", participants.FinalDesertHosts, participants.FinalDesertGuests1, participants.FinalDesertGuests2, wordFile);
+
+
+                // Save the word file.
+                wordFile.WordSaveAndClose(System.IO.Path.Combine(wordLettersFullFilename));
+                LogOutput("Worddokument skapat: " + wordLettersFullFilename);
             }
-            string wordLettersFullFilename = System.IO.Path.Combine(directory, wordLettersFilename);
-
-            LogOutput("Öppnar ett nytt worddokument för att skriva lite brev...");
-            // Generate Word Document
-            WordHandler wordFile = new WordHandler();
-            wordFile.WordOpenNewDocument();
-
-            wordFile.WordAddText("hej hej");
-            wordFile.WordAddPageBreak();
-            wordFile.WordAddText("hej hej igen");
-
-            // Save the word file.
-            wordFile.WordSaveAndClose(System.IO.Path.Combine(wordLettersFullFilename));
-            LogOutput("Worddokument skapat: " + wordLettersFullFilename);
-
             // Activate the open folder button.
             openFolder.Visible = true;
 
-            // Todo fix word documents.
+            LogOutput("Klart!");
+        }
+
+        /// <summary>
+        /// Generates the text that sends the participants to their next meal
+        /// </summary>
+        /// <param name="meal">"förrätten" or "huvudrätten"</param>
+        /// <param name="hosts">The hosts</param>
+        /// <param name="guests1">The First list of guests</param>
+        /// <param name="guests2">The Second list of guests</param>
+        /// <param name="doc">the word document</param>
+        private void AddInstructionsOfWhereToGoNextToWord(string meal, List<Participant> hosts, List<Participant> guests1, List<Participant> guests2, WordHandler doc)
+        {
+
+
+            char nl = (char)11; // New-line character in Word.
+            for (int i = 0; i < hosts.Count; i++)
+            {
+                string toBeReadBy = "Att läsas under måltiden av:" + nl + hosts[i].Name;
+                doc.WordAddText(toBeReadBy, "italic");
+
+                string text =
+                    "Hoppas ni har njutit av" + meal + " och sällskapet!" + nl +
+                    "Det är fortfarande mycket kvar och nu är det dags att åka vidare..." + nl + nl;
+
+                   
+//Annika Persson och Jessica Isacsson
+//är välkomna till
+//Marina Hellqvist och Johan Jonsson Åsbacken
+//9415, 07070 - 682 40 57
+//Jenny Bratt och Nisse Hedin
+//Är värd för nästa rätt
+//Kajsa och Peter Lindgren
+//är välkomna till
+//Sofia och Ulf Dagh
+//Skidtjärn Bergsvägen 8869, 070 - 3238318
+
+
+            }
+
+        }
+
+        /// <summary>
+        /// Generates the text that should be added to the document and sent to the participants in advance.
+        /// </summary>
+        /// <param name="meal">The part of the meal to prepare</param>
+        /// <param name="hosts">list of hosts.</param>
+        /// <param name="guests1">first list of guests</param>
+        /// <param name="guests2">second list of guests</param>
+        /// <param name="doc">the word document</param>
+        private void AddHostToWord(string meal, List<Participant> hosts, List<Participant> guests1, List<Participant> guests2, WordHandler doc)
+        {
+            string getAllergies(string host, string guest1, string guest2)
+            {
+                string result = "";
+                // result += (host == "" ? "" : host);
+                result += host;
+                if (guest1 != "")
+                {
+                    if (result == "")
+                    {
+                        result += guest1;
+                    }
+                    else
+                    {
+                        result += ", " + guest1;
+                    }
+                }
+                if (guest2 != "")
+                {
+                    if (result == "")
+                    {
+                        result += guest2;
+                    }
+                    else
+                    {
+                        result += ", " + guest2;
+                    }
+                }
+                if (result.Count() < 1)
+                {
+                    result = "Inga allergier";
+                }
+                
+                return result;
+            }
+
+            char nl = (char)11; // New-line character in Word.
+            for (int i = 0; i < hosts.Count; i++)
+            {
+                doc.WordAddText(hosts[i].Name, "name");
+                string text =
+                    "Välkomna att delta i matstafetten!" + nl +
+                    "Den del av måltiden ni har blivit tilldelade att förbereda är:" +
+                    nl + nl + meal + nl + nl +
+                    "Eventuella allergier ni behöver ta hänsyn till är:" + nl;
+                string allergies = getAllergies(hosts[i].Allergie, guests1[i].Allergie, guests2[i].Allergie);
+                text += allergies;
+                doc.WordAddText(text);
+                doc.WordAddPageBreak();
+            }
         }
 
         /// <summary>
