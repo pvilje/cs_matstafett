@@ -208,6 +208,8 @@ namespace Matstafett
                 AddHostToWord("Huvudrätt", participants.FinalMainCourseHosts, participants.FinalMainCourseGuests1, participants.FinalMainCourseGuests2, wordFile);
                 AddHostToWord("Efterrätt", participants.FinalDesertHosts, participants.FinalDesertGuests1, participants.FinalDesertGuests2, wordFile);
 
+                AddInstructionsOfWhereToGoNextToWord("förrätten", participants, wordFile);
+                AddInstructionsOfWhereToGoNextToWord("huvudrätten", participants, wordFile);
 
                 // Save the word file.
                 wordFile.WordSaveAndClose(System.IO.Path.Combine(wordLettersFullFilename));
@@ -223,37 +225,96 @@ namespace Matstafett
         /// Generates the text that sends the participants to their next meal
         /// </summary>
         /// <param name="meal">"förrätten" or "huvudrätten"</param>
-        /// <param name="hosts">The hosts</param>
-        /// <param name="guests1">The First list of guests</param>
-        /// <param name="guests2">The Second list of guests</param>
+        /// <param name="p">A full class of Foodrelayparticipants</param>
         /// <param name="doc">the word document</param>
-        private void AddInstructionsOfWhereToGoNextToWord(string meal, List<Participant> hosts, List<Participant> guests1, List<Participant> guests2, WordHandler doc)
+        
+        private void AddInstructionsOfWhereToGoNextToWord(string meal, FoodRelayParticipants p, WordHandler doc)
         {
+            int FindIndex(string needle, List<Participant> haystack)
+            {
+                int result = -1;
+                for (int i = 0; i < haystack.Count(); i++)
+                {
+                    if(needle== haystack[i].Name)
+                    {
+                        result = i;
+                        break;
+                    }
+                }
+                return result;
+            }
 
+            Participant FindInListHaystacks(string needle, List<Participant> Haystack1, List<Participant> Haystack2, List<Participant> HostStack)
+            {
+                int foundIndex = FindIndex(needle, Haystack1);
+                if (foundIndex == -1)
+                {
+                    foundIndex = FindIndex(needle, Haystack2);
+                }
+                if(foundIndex != -1)
+                {
+                    return HostStack[foundIndex];
+                }
+                else
+                {
+                    foundIndex = FindIndex(needle, HostStack);
+                }   
+                if(foundIndex != -1)
+                {
+                    return null;
+                }
+                throw new KeyNotFoundException("No new place to go is found for a participant");
+            }
+
+            string NextStopSnippet(Participant NextStop)
+            {
+                char newline = (char)11;
+                if (NextStop == null)
+                {
+                    return "är värd för nästa rätt" + newline + newline;
+                }
+                else
+                {
+                    return "är välkomna till" + newline + NextStop.Name + newline + NextStop.ContactInformation + newline + newline;
+                }
+            }
+
+            List<Participant> hosts = (meal == "förrätten" ? p.FinalStarterHosts : p.FinalMainCourseHosts);
+            List<Participant> guests1 = (meal == "förrätten" ? p.FinalStarterGuests1 : p.FinalMainCourseGuests1);
+            List<Participant> guests2 = (meal == "förrätten" ? p.FinalStarterGuests2: p.FinalMainCourseGuests2);
 
             char nl = (char)11; // New-line character in Word.
             for (int i = 0; i < hosts.Count; i++)
             {
+                Participant hostNextStop, guest1NextStop, guest2NextStop;
+                if (meal == "förrätten")
+                {
+                    hostNextStop = FindInListHaystacks(hosts[i].Name, p.FinalMainCourseGuests1, p.FinalMainCourseGuests2, p.FinalMainCourseHosts);
+                    guest1NextStop = FindInListHaystacks(guests1[i].Name, p.FinalMainCourseGuests1, p.FinalMainCourseGuests2, p.FinalMainCourseHosts);
+                    guest2NextStop = FindInListHaystacks(guests2[i].Name, p.FinalMainCourseGuests1, p.FinalMainCourseGuests2, p.FinalMainCourseHosts);
+                }
+                else
+                {
+                    hostNextStop = FindInListHaystacks(hosts[i].Name, p.FinalDesertGuests1, p.FinalDesertGuests2, p.FinalDesertHosts);
+                    guest1NextStop = FindInListHaystacks(guests1[i].Name, p.FinalDesertGuests1, p.FinalDesertGuests2, p.FinalDesertHosts);
+                    guest2NextStop = FindInListHaystacks(guests2[i].Name, p.FinalDesertGuests1, p.FinalDesertGuests2, p.FinalDesertHosts);
+                }
+                
                 string toBeReadBy = "Att läsas under måltiden av:" + nl + hosts[i].Name;
                 doc.WordAddText(toBeReadBy, "italic");
 
                 string text =
-                    "Hoppas ni har njutit av" + meal + " och sällskapet!" + nl +
-                    "Det är fortfarande mycket kvar och nu är det dags att åka vidare..." + nl + nl;
+                    "Hoppas ni har njutit av " + meal + " och sällskapet!" + nl +
+                    "Det är fortfarande mycket kvar och nu är det dags att åka vidare..." + nl + nl +
+                    hosts[i].Name + nl + NextStopSnippet(hostNextStop) +
+                    guests1[i].Name + nl + NextStopSnippet(guest1NextStop) +
+                    guests2[i].Name + nl + NextStopSnippet(guest2NextStop);
 
-                   
-//Annika Persson och Jessica Isacsson
-//är välkomna till
-//Marina Hellqvist och Johan Jonsson Åsbacken
-//9415, 07070 - 682 40 57
-//Jenny Bratt och Nisse Hedin
-//Är värd för nästa rätt
-//Kajsa och Peter Lindgren
-//är välkomna till
-//Sofia och Ulf Dagh
-//Skidtjärn Bergsvägen 8869, 070 - 3238318
-
-
+                doc.WordAddText(text);
+                if(!(meal == "huvudrätten" && i == (hosts.Count - 1)))
+                {
+                    doc.WordAddPageBreak();
+                }
             }
 
         }
